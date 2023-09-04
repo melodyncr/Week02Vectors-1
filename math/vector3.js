@@ -95,7 +95,8 @@ Vector3.prototype = {
         // todo - return the magnitude (A.K.A. length) of 'this' vector
         // This should NOT change the values of this.x, this.y, and this.z
 
-        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+        let length = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+        return length;
     },
 
     //----------------------------------------------------------------------------- 
@@ -106,7 +107,8 @@ Vector3.prototype = {
         // There are many occasions where knowing the exact length is unnecessary 
         // and the square can be substituted instead (for performance reasons).  
         // This function should NOT have to take the square root of anything.
-        return this.x * this.x + this.y * this.y + this.z * this.z;
+        let sqrMag = this.x * this.x + this.y * this.y + this.z * this.z;
+        return sqrMag;
     },
 
     //----------------------------------------------------------------------------- 
@@ -127,7 +129,8 @@ Vector3.prototype = {
     dot: function(other) {
         // todo - return the dot product betweent this vector and "other"
         // This should NOT change the values of this.x, this.y, and this.z
-        return this.x * other.x + this.y * other.y + this.z * other.z;
+        let dotProd = this.x * other.x + this.y * other.y + this.z * other.z;
+        return dotProd;
     },
 
 
@@ -150,9 +153,9 @@ Vector3.prototype = {
         var newLen = this.length();
         if (newLen !== 0) {
 
-            this.x * newScale / newLen
-            this.y * newScale / newLen
-            this.z * newScale / newLen
+            this.x *= newScale / newLen
+            this.y *= newScale / newLen
+            this.z *= newScale / newLen
 
         }
         return this;
@@ -162,7 +165,17 @@ Vector3.prototype = {
     angle: function(v1, v2) {
         // todo - calculate the angle in degrees between vectors v1 and v2. Do NOT
         //        change any values on the vectors themselves
+        var dotProd = v1.dot(v2);
+        var v1 = v1.length();
+        var v2 = v2.length();
 
+        if (v1 !== 0 && v2 !== 0) {
+            var cosTh = dotProd / (v1 * v2);
+            var rad = Math.acos(cosTh);
+            var deg = rad * (180 / Math.PI);
+
+            return deg;
+        }
         return 0;
     },
 
@@ -173,5 +186,13 @@ Vector3.prototype = {
         //        NOTE - "vectorToProject" and "otherVector" should NOT be altered (i.e. use clone)
         //        See "Vector Projection Slides" under "Extras" for more info.
 
+        var dotProd = vectorToProject.dot(otherVector);
+        var v2 = otherVector.lengthSqr();
+        if (v2 !== 0) {
+            var scalar = dotProd / v2;
+            var re = otherVector.clone().multiplyScalar(scalar);
+            return re;
+        }
+        return new Vector3(0, 0, 0);
     }
 };
