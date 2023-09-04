@@ -7,6 +7,12 @@
  * Here, the function is meant to be instantiated rather than called and the
  * instantiation process IS similar to other object oriented languages => new Vector3()
  */
+/**
+ * Author: Melody Neely 
+ * Partner: Luke Moore
+ * Date:09.03.2023
+ * 
+ */
 
 var Vector3 = function(x, y, z) {
     this.x = x || 0;
